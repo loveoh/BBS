@@ -1,4 +1,4 @@
-package com.kaishengit.web.user.filter;
+package com.kaishengit.web.filter;
 
 import org.apache.commons.lang3.StringUtils;
 

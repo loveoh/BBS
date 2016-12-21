@@ -50,7 +50,7 @@ public class SettingServlet extends BaseServlet {
     private void updateAvatar(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String avatar = req.getParameter("fileKey");
         User user = getCurrentUser(req);
-
+        user.setAvatar(Config.get("qiniu.domain")+user.getAvatar());
         UserService userService = new UserService();
         userService.uapdateAvatar(user,avatar);
 

@@ -1,4 +1,4 @@
-package com.kaishengit.web.user.filter;
+package com.kaishengit.web.filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

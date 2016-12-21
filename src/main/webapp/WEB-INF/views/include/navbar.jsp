@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="header-bar">
     <div class="container">
-        <a href="#" class="brand">
+        <a href="/home" class="brand">
             <i class="fa fa-reddit-alien"></i>
         </a>
         <ul class="unstyled inline pull-right">
@@ -23,7 +23,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href=""><i class="fa fa-plus"></i></a>
+                        <a href="/newTopic"><i class="fa fa-plus"></i></a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-bell"></i></a>
@@ -37,7 +37,7 @@
                 </c:when>
                 <c:otherwise>
                     <li>
-                        <a href="#"><i class="fa fa-sign-in"></i></a>
+                        <a href="/login"><i class="fa fa-sign-in"></i></a>
                     </li>
                 </c:otherwise>
             </c:choose>
