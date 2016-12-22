@@ -1,12 +1,14 @@
 package com.kaishengit.web.topic;
 
-import com.kaishengit.dao.TopicDao;
 import com.kaishengit.dto.JsonResult;
 import com.kaishengit.entity.Node;
 import com.kaishengit.entity.Topic;
 import com.kaishengit.entity.User;
 import com.kaishengit.service.TopicService;
+import com.kaishengit.utils.Config;
 import com.kaishengit.web.BaseServlet;
+import com.qiniu.util.Auth;
+import com.qiniu.util.StringMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,9 +25,17 @@ public class NewTopicServlet extends BaseServlet{
     TopicService topicService = new TopicService();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //获取七牛的token
+        Auth auth = Auth.create(Config.get("qiniu.ak"),Config.get("qiniu.sk"));
+
+        StringMap stringMap = new StringMap();
+        stringMap.put("returnBody","{ \"success\": true,\"file_path\":\""+Config.get("qiniu.domain")+"${key}\"}");
+        String token = auth.uploadToken(Config.get("qiniu.bucket"),null,3600,stringMap);
+
         //获取所有的节点,并传到jsp中
         List<Node> nodeList = topicService.findAllNode();
         req.setAttribute("nodeList",nodeList);
+        req.setAttribute("token",token);
         forward("topic/newtopic",req,resp);
     }
 
@@ -38,6 +48,7 @@ public class NewTopicServlet extends BaseServlet{
 
         User user = getCurrentUser(req);
       //  Topic topic = topicService.addNewTopic(title,content,user.getId(),Integer.valueOf(nodeid));
+       //将帖子存放在数据库中
         Topic topic = topicService.addNewTopic(title, content, Integer.valueOf(nodeid), user.getId());
 
         JsonResult jsonResult = new JsonResult(topic);

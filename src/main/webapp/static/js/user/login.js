@@ -51,11 +51,15 @@ $(function () {
                     },
                     success:function (data) {
                         if (data.state == "success"){
-
                             swal("登录成功","","success")
                             var url = getParameterByName("redirect");
                             if (url){
-                                window.location.href=url;
+                                var hash = location.hash;
+                                if(hash){
+                                    window.location.href=url+hash;
+                                }else{
+                                    window.location.href=url;
+                                }
                             }else{
                                 window.location.href="/home";
                             }

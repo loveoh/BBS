@@ -25,7 +25,7 @@
         <init-param>
             <!-- /setting,/post,/send 写成这样的形式,保证以后程序的扩展性-->
             <param-name>ValidateUrl</param-name>
-            <param-value>/user/setting</param-value>
+            <param-value>/user/setting,/newTopic,/topicDetail</param-value>
         </init-param>
     </filter>
     <filter-mapping>

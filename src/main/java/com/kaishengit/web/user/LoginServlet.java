@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.kaishengit.entity.User;
 import com.kaishengit.exception.ServiceException;
 import com.kaishengit.service.UserService;
+import com.kaishengit.utils.Config;
 import com.kaishengit.web.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -37,6 +38,7 @@ public class LoginServlet extends BaseServlet {
         Map<String,Object> result = Maps.newHashMap();
         try {
             User user = userService.findByNameAndPassword(username, password, ip);
+            user.setAvatar(Config.get("qiniu.domain") + user.getAvatar());
             //将登陆信息方如session中
             HttpSession session = req.getSession();
             session.setAttribute("curr_user",user);

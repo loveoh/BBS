@@ -10,7 +10,7 @@ public class User implements Serializable{
     /**
      * 用户的默认头像
      */
-    public static final String DEFAULT_USER_AVATAR = "u=1167689115,2259757988&fm=21&gp=0.jpg";
+    public static final String DEFAULT_USER_AVATAR = "u=749833722,3503508912&fm=21&gp=0.jpg";
 
     /**
      *  用户账号未激活

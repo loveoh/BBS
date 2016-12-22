@@ -22,4 +22,9 @@ public class NodeDao {
 
         return DbHelp.query(sql,new BeanHandler<Node>(Node.class),nodeid);
     }
+
+    public void update(Node node) {
+        String sql = "update t_node set nodename=?,topicnum=? where id = ?";
+        DbHelp.update(sql,node.getNodename(),node.getTopicnum(),node.getId());
+    }
 }
