@@ -22,8 +22,9 @@
                     ${requestScope.message}
             </div>
         </c:if>
+       <%-- 判断是直接在登录页面中登录,还是在其他页面中登录--%>
         <c:if test="${not empty param.redirect}">
-            <div class="alert alert-success">
+            <div class="alert alert-danger">
                    请登录后操作
             </div>
         </c:if>
@@ -37,7 +38,7 @@
             <div class="control-group">
                 <label class="control-label">密码</label>
                 <div class="controls">
-                    <input type="password" name="password">
+                    <input type="password" name="password" id="password">
                 </div>
             </div>
             <div class="control-group">
@@ -52,16 +53,12 @@
 
                 <a class="pull-right" href="/regist">注册账号</a>
             </div>
-
         </form>
-
-
-
     </div>
     <!--box end-->
 </div>
 <!--container end-->
-<script src="/static/js/jquery-1.12.4.min.js"></script>
+<script src="/static/js/jquery-1.11.3.min.js"></script>
 <script src="/static/js/jquery.validate.min.js"></script>
 <script src="/static/js/sweetalert/sweetalert.min.js"></script>
 <script src="/static/js/user/login.js"></script>

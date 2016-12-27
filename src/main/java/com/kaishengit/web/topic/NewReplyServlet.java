@@ -27,7 +27,7 @@ public class NewReplyServlet extends BaseServlet {
         TopicService topicService = new TopicService();
         if (StringUtils.isNumeric(topicid)){
             try {
-                topicService.addTopicReply(content, Integer.valueOf(topicid), user.getId());
+                topicService.addTopicReply(content, Integer.valueOf(topicid), user);
             }catch (ServiceException e){
                 resp.sendError(404,e.getMessage());
             }

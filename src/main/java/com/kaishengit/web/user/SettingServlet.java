@@ -35,11 +35,11 @@ public class SettingServlet extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         if ("profile".equals(req.getParameter("action"))){
-            updateProfile(req,resp);
+            updateProfile(req,resp);//修改邮箱
         }else if ("password".equals(req.getParameter("action"))){
-            updatePassword(req,resp);
+            updatePassword(req,resp);//修改密码
         }else if("avatar".equals(req.getParameter("action"))){
-            updateAvatar(req,resp);
+            updateAvatar(req,resp);//修改头像
         }else{
             throw new ServiceException("服务端异常");
         }

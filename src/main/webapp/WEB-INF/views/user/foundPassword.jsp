@@ -45,7 +45,7 @@
     <!--box end-->
 </div>
 <!--container end-->
-<script src="/static/js/jquery-1.12.4.min.js"></script>
+<script src="/static/js/jquery-1.11.3.min.js"></script>
 <script src="/static/js/jquery.validate.min.js"></script>
 <script src="/static/js/user/foundPassword.js"></script>
 </body>

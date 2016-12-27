@@ -18,7 +18,7 @@
             <span class="title"><i class="fa fa-sign-in"></i> 找回密码</span>
 
         <form action="" class="form-horizontal" id="resetForm">
-            <input type="hidden" name="id" value="${requestScope.   id}">
+            <input type="hidden" name="id" value="${requestScope.id}">
             <input type="hidden" name="token" value="${requestScope.token}">
             <div class="control-group">
                 <label class="control-label">新密码</label>
@@ -49,7 +49,7 @@
 </div>
 </div>
 <!--container end-->
-<script src="/static/js/jquery-1.12.4.min.js"></script>
+<script src="/static/js/jquery-1.11.3.min.js"></script>
 <script src="/static/js/jquery.validate.min.js"></script>
 <script src="/static/js/user/resetpassword.js"></script>
 </body>

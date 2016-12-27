@@ -14,7 +14,7 @@ public class NodeDao {
 
     public List<Node> findAllNode() {
         String sql = "select * from t_node";
-        return DbHelp.query(sql,new BeanListHandler<Node>(Node.class));
+        return DbHelp.query(sql,new BeanListHandler<>(Node.class));
     }
 
     public Node findById(Integer nodeid) {

@@ -3,6 +3,7 @@
  */
 $(function () {
 
+/*    获取url中redirect后面的域名*/
     function getParameterByName(name, url) {
         if (!url) {
             url = window.location.href;
@@ -15,6 +16,13 @@ $(function () {
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
+    //按回车键,直接提交表单
+    $("#password").keydown(function () {
+        if (event.keyCode == 13){
+            $("#loginBtn").click();
+        }
+
+    })
     $("#loginBtn").click(function () {
         $("#loginForm").submit();
     })

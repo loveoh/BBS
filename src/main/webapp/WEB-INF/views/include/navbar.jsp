@@ -12,21 +12,24 @@
         <a href="/home" class="brand">
             <i class="fa fa-reddit-alien"></i>
         </a>
+
         <ul class="unstyled inline pull-right">
             <c:choose>
                 <c:when test="${not empty sessionScope.curr_user}">
-
+                   <%-- 定义一个标记,登录之后才会触发轮询--%>
+                    <span id="isLogin" class="hide">1</span>
                     <li>
                         <a href="/user/setting">
                             <img id="navbar_avatar" src="${sessionScope.curr_user.avatar}?imageView2/1/w/20/h/20"
                                  class="img-circle" alt="">
+                            <span>${sessionScope.curr_user.username}</span>
                         </a>
                     </li>
                     <li>
                         <a href="/newTopic"><i class="fa fa-plus"></i></a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-bell"></i></a>
+                        <a href="/notify"><i class="fa fa-bell"></i><span class="badge" id="unreadnotify"></span></a>
                     </li>
                     <li>
                         <a href="/user/setting"><i class="fa fa-cog"></i></a>

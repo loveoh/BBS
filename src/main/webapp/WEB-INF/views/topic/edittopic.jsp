@@ -11,7 +11,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>发布新主题</title>
+    <title>编辑主题</title>
     <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
@@ -24,19 +24,20 @@
 <div class="container">
     <div class="box">
         <div class="box-header">
-            <span class="title"><i class="fa fa-plus"></i> 发布新主题</span>
+            <span class="title"><i class="fa fa-plus"></i> 编辑主题</span>
         </div>
 
         <form action="" method="post" style="padding: 20px" id="topicForm">
             <label class="control-label">主题标题</label>
-            <input id="title" name="title" type="text" style="width: 100%;box-sizing: border-box;height: 30px" placeholder="请输入主题标题，如果标题能够表达完整内容，则正文可以为空">
+            <input type="hidden" id="topicid" name="topicid" value="${topic.id}">
+            <input id="title" name="title" type="text" value="${topic.title}" style="width: 100%;box-sizing: border-box;height: 30px">
             <label class="control-label">正文</label>
-            <textarea name="content" id="editor"></textarea>
+            <textarea name="content" id="editor">${topic.content}</textarea>
 
             <select name="nodeid" id="nodeid" style="margin-top:15px;">
                 <option value="">请选择节点</option>
                 <c:forEach items="${requestScope.nodeList}" var="node">
-                    <option value="${node.id}">${node.nodename}</option>
+                    <option ${topic.nodeid == node.id ? "selected" :""} value="${node.id}">${node.nodename}</option>
                 </c:forEach>
 
             </select>
@@ -65,7 +66,7 @@
             //optional options
             toolbar: ['title','bold','italic', 'underline','strikethrough', 'fontScale', 'color', 'ol', 'ul', 'blockquote', 'code', 'table', 'link', 'image', 'hr','alignment','emoji'],
             emoji: {
-                imagePath:'/static/img/emoji'
+                imagePath: '/static/img/emoji'
             },
             <%--upload:{--%>
                 <%--url :"http://up-z1.qiniu.com/",--%>
@@ -103,7 +104,7 @@
             },
             submitHandler:function () {
                 $.ajax({
-                    url:"/newTopic",
+                    url:"/editTopic",
                     type:"post",
                     data:$("#topicForm").serialize(),
                     beforeSend:function () {
@@ -112,9 +113,9 @@
                     success:function (data) {
                         if (data.state == "success"){
 
-                            window.location.href="/topicDetail?topicid="+data.data.id;
+                            window.location.href="/topicDetail?topicid="+data.data;
                         }else{
-                            alert("发帖失败");
+                            alert("修改失败aaaa");
                         }
                     },
                     error:function () {

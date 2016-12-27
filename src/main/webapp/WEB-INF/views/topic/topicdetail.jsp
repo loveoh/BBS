@@ -44,24 +44,41 @@
             ${requestScope.topic.content}
         </div>
         <div class="topic-toolbar">
-            <ul class="unstyled inline pull-left">
-                <li><a href="">加入收藏</a></li>
-                <li><a href="">感谢</a></li>
-                <li><a href=""></a></li>
-            </ul>
+            <c:if test="${not empty sessionScope.curr_user}">
+                <ul class="unstyled inline pull-left">
+                    <c:choose>
+                        <c:when test="${not empty requestScope.fav}">
+                            <li><a href="javascript:;" id="favtopic">取消收藏</a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="javascript:;" id="favtopic">加入收藏</a></li>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <li><a href="">感谢</a></li>
+                    <c:if test="${sessionScope.curr_user.id == topic.userid and topic.edit}">
+                        <li><a href="/editTopic?topicid=${topic.id}">编辑</a></li>
+                    </c:if>
+
+                </ul>
+            </c:if>
+
             <ul class="unstyled inline pull-right muted">
                 <li>${requestScope.topic.clicknum}次点击</li>
-                <li>${requestScope.topic.favnum}人收藏</li>
+                <li><span id="topicfav">${requestScope.topic.favnum}</span>人收藏</li>
                 <li>${requestScope.topic.thankyounum}人感谢</li>
             </ul>
         </div>
     </div>
     <!--box end-->
 
-    <div class="box" style="margin-top:20px;">
-        <div class="talk-item muted" style="font-size: 12px">
-           ${fn:length(replyList)}个回复 | 直到 <span id="lastreplytime">${topic.lastreplytime}</span>
+         <div class="box" style="margin-top:20px;">
+             <c:if test="${not empty replyList}">
+            <div class="talk-item muted" style="font-size: 12px">
+                ${fn:length(replyList)}个回复 | 直到 <span id="lastreplytime">${topic.lastreplytime}</span>
         </div>
+    </c:if>
+
 
 
         <c:forEach items="${replyList}" var="reply" varStatus="vs">
@@ -78,6 +95,7 @@
                         <p style="font-size: 14px">${reply.content}</p>
                     </td>
                     <td width="70" align="right" style="font-size: 12px">
+                       <%-- 通过c标签中的varStatus="vs",${vs.count}得到当前遍历的层数--%>
                         <a href="javascript:;" rel="${vs.count}" class="replylink" title="回复"><i class="fa fa-reply"></i></a>&nbsp;
                         <span class="badge">${vs.count}</span>
                     </td>
@@ -125,12 +143,21 @@
 <script src="https://cdn.staticfile.org/moment.js/2.17.1/locale/zh-cn.js"></script>
 <script>
     $(function(){
-        var editor = new Simditor({
-            textarea: $('#editor'),
-            toolbar:false
-            //optional options
+        <c:if test="${not empty sessionScope.curr_user}">
+            var editor = new Simditor({
+                textarea: $('#editor'),
+                toolbar:false
+                //optional options
+            });
+       /* 绑定一个click事件,点击之后做到回复其他用户的回复*/
+        $(".replylink").click(function () {
+            var count = $(this).attr("rel");
+            var html = " <a href='#reply"+count+"'>"+"@"+count+"</a>";
+            /*此处editor先getValue()再setValue();防止出现用户先打字在@其他人时,打字没有的bug*/
+            editor.setValue(html + editor.getValue());
+            window.location.href="#reply";
         });
-
+        </c:if>
         $("#cretaetome").text(moment($("#cretaetome").text()).fromNow());
         $("#lastreplytime").text(moment($("#lastreplytime").text()).format("YYYY年MM月DD日 HH:mm:ss"));
         $(".reply").text(function () {
@@ -140,12 +167,31 @@
 
         $("#replyBtn").click(function () {
             $("#replyForm").submit();
-        })
-        $(".replylink").click(function () {
-            var count = $(this).attr("rel");
-            var html = " <a href='#reply"+count+"'>"+"@"+count+"</a>";
-            editor.setValue(html + editor.getValue());
-            window.location.href="#reply";
+        });
+
+
+        $("#favtopic").click(function () {
+            var $this = $(this);
+            var action = "";
+            if($this.text() == "加入收藏"){
+                action = "fav";
+            }else{
+                action = "unfav";
+            }
+            $.post("/topicFav",{"topicid":${topic.id},"action":action}).done(function (json) {
+                if (json.state == "success"){
+                    if (action == "fav"){
+                        $this.text("取消收藏");
+                    }else{
+                        $this.text("加入收藏");
+                    }
+                    $("#topicfav").text(json.data);
+                }
+            }).error(function () {
+
+            })
+            
+
         })
     });
 </script>

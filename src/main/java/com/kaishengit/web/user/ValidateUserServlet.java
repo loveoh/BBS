@@ -1,6 +1,5 @@
 package com.kaishengit.web.user;
 
-import com.kaishengit.entity.User;
 import com.kaishengit.service.UserService;
 import com.kaishengit.utils.StringUtils;
 import com.kaishengit.web.BaseServlet;
@@ -15,7 +14,7 @@ import java.io.IOException;
  * Created by loveoh on 2016/12/15.
  */
 @WebServlet("/validate/user")
-public class ValidateUserServlet extends BaseServlet {
+public class   ValidateUserServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");

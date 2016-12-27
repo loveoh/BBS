@@ -3,17 +3,21 @@ package com.kaishengit.service;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.kaishengit.dao.LoginLogDao;
+import com.kaishengit.dao.NotifyDao;
 import com.kaishengit.dao.UserDao;
 import com.kaishengit.entity.LoginLog;
+import com.kaishengit.entity.Notify;
 import com.kaishengit.entity.User;
 import com.kaishengit.exception.ServiceException;
 import com.kaishengit.utils.Config;
 import com.kaishengit.utils.EmailUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +30,8 @@ public class UserService {
     private UserDao userDao = new UserDao();
     private Logger logger = LoggerFactory.getLogger(UserService.class);
     private LoginLogDao logDao = new LoginLogDao();
+    private NotifyDao notifyDao = new NotifyDao();
+
     private String salt = Config.get("user_password_salt");
 
     /**
@@ -187,7 +193,7 @@ public class UserService {
 
                             //将用户账号放入到缓存中,以确定是哪一个账号修改密码
                             passwordCache.put(uuid, user.getUsername());
-                            System.out.println("用户名:" + user.getUsername());
+
                             String html = "<h3>Dear:" + user.getUsername() + "</h3><br>请点击以下<a href=" + url + ">链接</a>找回密码,该邮件30分钟内有效";
                             EmailUtils.sendHtmlEmail(value, "密码找回", html);
                         }
@@ -284,6 +290,30 @@ public class UserService {
     public void uapdateAvatar(User user, String avatar) {
         user.setAvatar(avatar);
         userDao.update(user);
+    }
+
+    /**
+     * 查询notify表
+     * @param user
+     * @return
+     */
+    public List<Notify> findNotifyListByUser(User user) {
+
+        return notifyDao.findNotifyListByUserId(user.getId());
+    }
+
+    /**
+     * 通过ID读取已读信息
+     * @param ids
+     */
+    public void updateState(String ids) {
+        String[] idArray = ids.split(",");
+        for (int i = 0;i<idArray.length;i++){
+            Notify notify = notifyDao.findById(idArray[i]);
+            notify.setState(Notify.NOTIFY_STATE_READ);
+            notify.setReadtime(new Timestamp(DateTime.now().getMillis()));
+            notifyDao.update(notify);
+        }
     }
 }
 

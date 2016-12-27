@@ -21,7 +21,6 @@ $(function () {
             repassword:{
                 required:true,
                 equalTo:"#password"
-
             },
             email:{
                 required:true,

@@ -1,5 +1,7 @@
 package com.kaishengit.entity;
 
+import org.joda.time.DateTime;
+
 import java.sql.Timestamp;
 
 /**
@@ -123,5 +125,16 @@ public class Topic {
 
     public void setNode(Node node) {
         this.node = node;
+    }
+
+    public boolean isEdit (){
+        DateTime dateTime = new DateTime(getCreatetime());
+        if (dateTime.plusMinutes(15).isAfterNow() && getReplynum() == 0){
+            return true;
+        }else{
+            return false;
+        }
+
+
     }
 }

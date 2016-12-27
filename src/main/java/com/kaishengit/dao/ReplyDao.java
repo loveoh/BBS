@@ -21,9 +21,10 @@ public class ReplyDao {
         DbHelp.update(sql,reply.getContent(),reply.getTopicid(),reply.getUserid());
     }
 
+
     public List<Reply> findAllReply(Integer topicid) {
         String sql ="SELECT tu.id,tu.username,tu.avatar ,tr.* FROM t_reply tr ,t_user tu WHERE tr.userid = tu.id AND topicid = ?";
-
+        //此处不能是用new BeanHandler<>(Reply.class),是因为此处是多表联查,需要自己自定义一个抽象类去实现
         return DbHelp.query(sql, new AbstractListHandler<Reply>() {
             @Override
             protected Reply handleRow(ResultSet rs) throws SQLException {

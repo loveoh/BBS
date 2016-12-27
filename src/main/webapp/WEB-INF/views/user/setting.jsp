@@ -110,7 +110,7 @@
 
 </div>
 <!--container end-->
-<script src="/static/js/jquery-1.12.4.min.js"></script>
+<script src="/static/js/jquery-1.11.3.min.js"></script>
 <script src="/static/js/jquery.validate.min.js"></script>
 <script src="/static/js/webuploader/webuploader.min.js"></script>
 <script src="/static/js/user/setting.js"></script>
@@ -135,7 +135,7 @@
             var fileKey = data.key;
             $.post("/user/setting?action=avatar",{"fileKey":fileKey})
                     .done(function (data) {
-                        var url = "http://oi3rlw2s2.bkt.clouddn.com/"+fileKey;
+                        var url = "http://oikchi5rk.bkt.clouddn.com/"+fileKey;
                         $("#avatar").attr("src",url+"?imageView2/1/w/40/h/40");
                         $("#navbar_avatar").attr("src",url+"?imageView2/1/w/20/h/20");
                     }).error(function () {
