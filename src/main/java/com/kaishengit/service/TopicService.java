@@ -262,4 +262,63 @@ public class TopicService {
         return topicPage;
 
     }
+
+
+    /**
+     * 根据nodeid删除node
+     * @param nodeid 需要删除的节点id
+     */
+    public void deleteNodeByNodeId(String nodeid) {
+        //只有当节点下面没有帖子的时候才能删除节点
+        if (nodeid != null && StringUtils.isNumeric(nodeid)){
+            Node node = nodeDao.findById(Integer.valueOf(nodeid));
+            if (node.getTopicnum() > 0){
+                throw new ServiceException("节点不为空,不能删除");
+            }else{
+                nodeDao.deleteNodeByNodeId(nodeid);
+            }
+        }else{
+            throw new ServiceException("参数异常");
+        }
+
+
+    }
+
+    /**
+     * 通过节点名称查找节点
+     * @param nodeName
+     */
+    public Node findNodeByNodeName(String nodeName) {
+        return nodeDao.findNodeByNodeName(nodeName);
+
+    }
+
+    /**
+     * 添加节点
+     * @param nodeName 要添加的节点名称
+     */
+    public void addNodeByNodeName(String nodeName) {
+        nodeDao.addNode(nodeName);
+
+    }
+
+    /**
+     * 修改节点名称
+     * @param nodeid
+     * @param newNodeName
+     */
+    public void updateNodeName(String nodeid, String newNodeName) {
+        if (nodeid != null && StringUtils.isNumeric(nodeid)){
+            Node node = nodeDao.findById(Integer.valueOf(nodeid));
+            if (node != null){
+                node.setNodename(newNodeName);
+                nodeDao.update(node);
+            }else {
+                throw new ServiceException("该节点不存在或已被删除");
+            }
+
+        }else {
+            throw new ServiceException("参数异常");
+        }
+    }
 }

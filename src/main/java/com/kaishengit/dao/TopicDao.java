@@ -82,4 +82,15 @@ public class TopicDao {
             }
         },list.toArray());
     }
+
+
+    /**
+     * 根据帖子id删除帖子
+     * @param topicid
+     */
+    public void deleteTopic(String topicid) {
+        String sql = "delete from t_topic where id = ?";
+        DbHelp.update(sql,topicid);
+
+    }
 }

@@ -39,4 +39,13 @@ public class ReplyDao {
             }
         },topicid);
     }
+
+    /**
+     * 根据帖子的id 删除该帖子的所有回复
+     * @param id 帖子的id
+     */
+    public void deleteAllById(String id) {
+        String sql = "delete from t_reply where topicid = ?";
+        DbHelp.update(sql,id);
+    }
 }
