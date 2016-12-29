@@ -15,6 +15,11 @@
     <link href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/js/sweetalert/sweetalert.css">
+    <style>
+        #nodeid {
+            width:150px;
+        }
+    </style>
 </head>
 <body>
 <%@include file="../include/adminnavbar.jsp"%>
@@ -28,6 +33,7 @@
             <th>发布时间</th>
             <th>回复数量</th>
             <th>最后回复时间</th>
+            <th>节点名称</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -41,6 +47,16 @@
                 <td>${topic.createtime}</td>
                 <td>${topic.replynum}</td>
                 <td>${topic.lastreplytime}</td>
+                <td> <select name="nodeid" id="nodeid">
+                    <option value="">请选择节点</option>
+                    <c:forEach items="${requestScope.nodeList}" var="node">
+                        <option ${topic.nodeid == node.id ? "selected" :""} value="${node.id}">${node.nodename}</option>
+                    </c:forEach>
+                </select>
+                </td>
+                <td>
+                    <a rel="${topic.id}" class="update" href="javascript:;">修改</a>
+                </td>
                 <td>
                     <a rel="${topic.id}" class="del" href="javascript:;">删除</a>
                 </td>
@@ -83,7 +99,7 @@
                     },
                     function(){
                         $.ajax({
-                            url:"/admin/topic",
+                            url:"/admin/topic?action=del",
                             type:"post",
                             data:{"id":id},
                             success:function (json) {
@@ -101,6 +117,27 @@
 
                     });
         });
+
+        $(".update").click(function () {
+            var id = $(this).attr("rel");
+            var nodeid = $("#nodeid").val();
+            $.ajax({
+                url:"/admin/topic?action=update",
+                type:"post",
+                data:{"id":id,"nodeid":nodeid},
+                success:function (json) {
+                    if(json.state == "success"){
+                        swal("Deleted!", "", "success");
+                        window.history.go(0);
+                    }else{
+                        swal("修改失败");
+                    }
+                },
+                error:function () {
+                    swal("服务器忙,请稍后再试");
+                }
+            })
+        })
     });
 </script>
 </body>

@@ -1,5 +1,6 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,64 +21,17 @@
             <th>日期</th>
             <th>新主题数</th>
             <th>新回复数</th>
-            <th>操作</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>
-                2016-12-28
-            </td>
-            <td>123</td>
-            <td>2546</td>
+        <c:forEach items="${page.items}" var="topicVo">
+            <tr>
+                <td>${topicVo.DATE}</td>
+                <td>${topicVo.newtopicnum}</td>
+                <td>${topicVo.newreplynum}</td>
+            </tr>
+        </c:forEach>
 
-            <td>
-                <a href="">详情</a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                2016-12-27
-            </td>
-            <td>123</td>
-            <td>2546</td>
-
-            <td>
-                <a href="">详情</a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                2016-12-26
-            </td>
-            <td>123</td>
-            <td>2546</td>
-
-            <td>
-                <a href="">详情</a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                2016-12-25
-            </td>
-            <td>123</td>
-            <td>2546</td>
-
-            <td>
-                <a href="">详情</a>
-            </td>
-        </tr><tr>
-            <td>
-                2016-12-24
-            </td>
-            <td>123</td>
-            <td>2546</td>
-
-            <td>
-                <a href="">详情</a>
-            </td>
-        </tr>
         </tbody>
     </table>
     <div class="pagination pagination-mini pagination-centered">

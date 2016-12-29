@@ -6,9 +6,11 @@ import com.kaishengit.entity.User;
 import com.kaishengit.utils.Config;
 import com.kaishengit.utils.DbHelp;
 import com.kaishengit.utils.StringUtils;
+import com.kaishengit.vo.TopicVo;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.handlers.AbstractListHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.ResultSet;
@@ -52,7 +54,7 @@ public class TopicDao {
     }
 
     public List<Topic> findList(Map<String, Object> map) {
-        String sql = "SELECT tu.username,tu.avatar, tt.* FROM t_topic tt, t_user tu WHERE tt.userid = tu.id ";
+        String sql = "SELECT tu.id, tu.username,tu.avatar, tt.* FROM t_topic tt, t_user tu WHERE tt.userid = tu.id ";
         String nodeid = map.get("nodeid") == null?null:String.valueOf(map.get("nodeid"));
         String where = "";
 
@@ -92,5 +94,20 @@ public class TopicDao {
         String sql = "delete from t_topic where id = ?";
         DbHelp.update(sql,topicid);
 
+    }
+
+
+    public int topicVoCount() {
+        String sql = "SELECT COUNT(*) FROM(SELECT COUNT(*) FROM t_topic GROUP BY DATE_FORMAT(createtime,'%Y-%m-%d')) AS topicCount";
+        return DbHelp.query(sql,new ScalarHandler<Long>()).intValue();
+
+    }
+
+    public List<TopicVo> findTopicVoList(int pageStart, int pageSize) {
+        String sql = "SELECT COUNT(*) AS newtopicnum,DATE_FORMAT(createtime,'%Y-%m-%d') AS DATE,\n" +
+                "(SELECT COUNT(*)FROM t_reply WHERE DATE_FORMAT(createtime,'%Y-%m-%d') = (DATE_FORMAT(t_topic.createtime,'%Y-%m-%d'))) AS newreplynum \n" +
+                "FROM t_topic  GROUP BY (DATE_FORMAT(createtime,'%Y-%m-%d')) \n" +
+                "ORDER BY (DATE_FORMAT(createtime,'%Y-%m-%d')) DESC LIMIT ?,?";
+        return DbHelp.query(sql,new BeanListHandler<TopicVo>(TopicVo.class),pageStart,pageSize);
     }
 }
